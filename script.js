@@ -12,6 +12,11 @@ async function init(){
     });
 }
 
+self.addEventListener("fetch", (e) => {
+    body.innerHTML = 'ta pa de wifi frr';
+});
+   
+
 async function getAllCountries(){
     let jsonResult = '';
     const url = 'https://restcountries.com/v3.1/all';
@@ -38,5 +43,12 @@ function sortData(data){
 function getCountriesFromLocal(){
     return listCountries = JSON.parse(localStorage.getItem('countries'));
 }
+
+// if ("serviceWorker" in navigator) {
+//     window.addEventListener("load", () => {
+//     navigator.serviceWorker.register("/sw.js");
+//     });
+// }
+   
 
 init();
