@@ -1,5 +1,6 @@
 const select = document.getElementById('selectCountry');
 const sorter = MySort('AaÀàÁáÂâÃãÄäÅåĀāĂăĄąǍǎǺǻÆæBbCcÇçĆćĈĉĊċČčDdĎďĐđEeÈèÉéÊêËëĒēĔĕĖėĘęĚěFfGgĜĝĞğĠġĢģǦǧHhĤĥĦħIiÌìÍíÎîÏïĨĩĪīĬĭĮįİıǏǐJjĴĵKkĶķǨǩLlĹĺĻļĽľĿŀŁłMmNnÑñŃńŅņŇňŉŊŋOoÒòÓóÔôÕõÖöØøŌōŎŏŐőƠơǑǒPpQqRrŔŕŖŗŘřSsŚśŜŝŞşŠšTtŢţŤťŦŧUuÙùÚúÛûÜüŨũŪūŬŭŮůŰűŲųŴŵXxYyÝýŶŷŸÿZzŹźŻżŽž');
+const alphabet = 'AaÀàÁáÂâÃãÄäÅåĀāĂăĄąǍǎǺǻÆæBbCcÇçĆćĈĉĊċČčDdĎďĐđEeÈèÉéÊêËëĒēĔĕĖėĘęĚěFfGgĜĝĞğĠġĢģǦǧHhĤĥĦħIiÌìÍíÎîÏïĨĩĪīĬĭĮįİıǏǐJjĴĵKkĶķǨǩLlĹĺĻļĽľĿŀŁłMmNnÑñŃńŅņŇňŉŊŋOoÒòÓóÔôÕõÖöØøŌōŎŏŐőƠơǑǒPpQqRrŔŕŖŗŘřSsŚśŜŝŞşŠšTtŢţŤťŦŧUuÙùÚúÛûÜüŨũŪūŬŭŮůŰűŲųŴŵXxYyÝýŶŷŸÿZzŹźŻżŽž';
 /**
  * 
  * @param {*} date 
@@ -15,13 +16,20 @@ function addHours(date, h) {
  * fonction executée au lancement de l'app
  */
 async function init(){
-    if (getCountriesFromLocal() === null || getExpDateFromLocal() < Date.now()) {
+    if (!('countries' in localStorage)) {
         let data = await getAllCountries();
         data = JSON.stringify(sortData(data));
         localStorage.setItem('countries',data);
         localStorage.setItem('expDate',addHours(Date.now(),1));
     }
-
+    if (('expDate' in localStorage)) {
+        if (Date.now() > getExpDateFromLocal()) {
+            let data = await getAllCountries();
+            data = JSON.stringify(sortData(data));
+            localStorage.setItem('countries',data);
+            localStorage.setItem('expDate',addHours(Date.now(),1));
+        }
+    }
     getCountriesFromLocal().forEach((country) => {
         createCountryLabel(country);
     });
@@ -58,7 +66,20 @@ function sortData(data){
         }
         list.push(c);
     });
-    list.map(a => a.frenchName).sort(sorter);
+    list.sort((a, b) => {
+        var index_a = alphabet.indexOf(a.frenchName[0]),
+        index_b = alphabet.indexOf(b.frenchName[0]);
+        if (index_a === index_b) {
+            if (a.frenchName < b.frenchName) {
+                return -1;
+            } else if (a.frenchName > b.frenchName) {
+                return 1;
+            }
+            return 0;
+        } else {
+            return index_a - index_b;
+        }
+    });
     return list;
 }
 
@@ -79,7 +100,7 @@ function getExpDateFromLocal(){
 }
 
 /**
- * 
+ * NOT USED ANYMORE !!!
  * @param {*} alphabet un string avec touts les caractères à trier dans l'ordre 
  * @returns une fonction pour sort une liste
  */
