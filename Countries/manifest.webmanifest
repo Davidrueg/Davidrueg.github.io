@@ -1,0 +1,23 @@
+{
+    "lang": "fr",
+    "name": "mon hello world",
+    "description": "mon super hello world",
+    "short_name": "Hello World",
+    "scope": "/",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "theme_color": "#000000",
+    "background_color": "#1e90ff",
+    "icons": [
+        {
+            "src": "/images/jetonJWT.PNG",
+            "sizes": "16x16"
+        },
+        {
+            "src": "/images/Capture.PNG",
+            "sizes": "48x48"
+        }
+    ]
+}
+   
