@@ -1,0 +1,19 @@
+{
+    "lang": "fr",
+    "dir": "ltr",
+    "name": "Liste de tous les pays du monde",
+    "description": "Affiche le drapeau, le nom et la région de tous les pays du monde",
+    "short_name": "liste des pays",
+    "scope": "/",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "theme_color": "#000000",
+    "background_color": "#253847",
+    "icons": [
+        {
+            "src": "/res/img/world-144x144.png",
+            "sizes": "144x144"
+        }
+    ]
+}

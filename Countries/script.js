@@ -1,6 +1,5 @@
 const select = document.getElementById('selectCountry');
 const sorter = MySort('AaÀàÁáÂâÃãÄäÅåĀāĂăĄąǍǎǺǻÆæBbCcÇçĆćĈĉĊċČčDdĎďĐđEeÈèÉéÊêËëĒēĔĕĖėĘęĚěFfGgĜĝĞğĠġĢģǦǧHhĤĥĦħIiÌìÍíÎîÏïĨĩĪīĬĭĮįİıǏǐJjĴĵKkĶķǨǩLlĹĺĻļĽľĿŀŁłMmNnÑñŃńŅņŇňŉŊŋOoÒòÓóÔôÕõÖöØøŌōŎŏŐőƠơǑǒPpQqRrŔŕŖŗŘřSsŚśŜŝŞşŠšTtŢţŤťŦŧUuÙùÚúÛûÜüŨũŪūŬŭŮůŰűŲųŴŵXxYyÝýŶŷŸÿZzŹźŻżŽž');
-
 /**
  * 
  * @param {*} date 
@@ -26,7 +25,6 @@ async function init(){
     getCountriesFromLocal().forEach((country) => {
         createCountryLabel(country);
     });
-    console.log('test');
 }
 /**
  * 
@@ -52,14 +50,15 @@ async function getAllCountries(){
  * @returns {Array} The array of countries sorted by name
  */
 function sortData(data){
-    let list = [];
+    let list = Array();
     data.forEach(country => {
-        list.push(country['translations']['fra']['official']);
-        //list[country['translations']['fra']['official']] = [country['flags']['png']];
+        let c = {
+            frenchName : country['translations']['fra']['official'],
+            flag : country['flags']['png']
+        }
+        list.push(c);
     });
-    //var tuples = [list];
-    //for (var key in obj) tuples.push([key, obj[key]]);
-    //list.sort(sorter);
+    list.map(a => a.frenchName).sort(sorter);
     return list;
 }
 
@@ -104,7 +103,11 @@ function MySort(alphabet)
     }
 }
 
-function createCountryLabel(countryName){
+/**
+ * 
+ * @param {string} countryName 
+ */
+function createCountryLabel(country){
     
     let w3PanelDiv = document.createElement("div");
     w3PanelDiv.classList.add("w3-panel");
@@ -116,7 +119,7 @@ function createCountryLabel(countryName){
     w3ColS3Div.classList.add("w3-col", "s3");
     
     let imgElement = document.createElement("img");
-    imgElement.src = "img_avatar.jpg";
+    imgElement.src = country.flag;
     imgElement.style.width = "100%";
     
     w3ColS3Div.appendChild(imgElement);
@@ -125,7 +128,7 @@ function createCountryLabel(countryName){
     w3ColS9Div.classList.add("w3-col", "s9", "w3-container");
     
     let h3Element = document.createElement("h3");
-    h3Element.textContent = countryName;
+    h3Element.textContent = country.frenchName;
     
     let pElement = document.createElement("p");
     pElement.textContent = "The response to the animations was ridiculous.";
@@ -144,6 +147,9 @@ function createCountryLabel(countryName){
     document.body.appendChild(w3PanelDiv);
 }
 
+self.addEventListener("fetch", (e) => {
+    console.log(`[Service Worker] Fetched resource ${e.request.url}`);
+});
 
 
 init();
